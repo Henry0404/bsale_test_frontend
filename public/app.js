@@ -23,9 +23,9 @@ items.addEventListener("click", (e) => {
 
 const fetchData = async () => {
   try {
-    const res = await fetch("api.json");
+    const res = await fetch("https://henry-bsale-test-backend.herokuapp.com/");
     const data = await res.json();
-    //console.log(data);
+
     pintarCards(data);
   } catch (error) {
     console.log(error);
@@ -33,35 +33,31 @@ const fetchData = async () => {
 };
 
 const pintarCards = (data) => {
-  //console.log(data);
   data.forEach((producto) => {
-    templateCard.querySelector("h5").textContent = producto.title;
-    templateCard.querySelector("p").textContent = producto.precio;
-    templateCard
-      .querySelector("img")
-      .setAttribute("src", producto.thumbnailUrl);
-    templateCard.querySelector(".btn-dark").dataset.id = producto.id;
-    const clone = templateCard.cloneNode(true);
-    fragment.appendChild(clone);
+    if (producto.url_image) {
+      templateCard.querySelector("h5").textContent = producto.name;
+      templateCard.querySelector("p").textContent = producto.price;
+      templateCard.querySelector("img").setAttribute("src", producto.url_image);
+      templateCard.querySelector(".btn-dark").dataset.id = producto.id;
+      const clone = templateCard.cloneNode(true);
+      fragment.appendChild(clone);
+    }
   });
   cards.appendChild(fragment);
 };
 
 const addCarrito = (e) => {
-  //console.log(e.target);
-  //console.log(e.target.classList.contains("btn-dark"));
   if (e.target.classList.contains("btn-dark")) {
     setCarrito(e.target.parentElement);
   }
   e.stopPropagation();
 };
 
-const setCarrito = (Objecto) => {
-  //console.log(Objecto);
+const setCarrito = (objecto) => {
   const producto = {
-    id: Objecto.querySelector(".btn-dark").dataset.id,
-    title: Objecto.querySelector("h5").textContent,
-    precio: Objecto.querySelector("p").textContent,
+    id: objecto.querySelector(".btn-dark").dataset.id,
+    title: objecto.querySelector("h5").textContent,
+    precio: objecto.querySelector("p").textContent,
     cantidad: 1,
   };
   if (carrito.hasOwnProperty(producto.id)) {
