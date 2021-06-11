@@ -38,7 +38,10 @@ const pintarCards = (data) => {
       templateCard.querySelector("h5").textContent = producto.name;
       templateCard.querySelector("p").textContent = producto.price;
       templateCard.querySelector("img").setAttribute("src", producto.url_image);
-      templateCard.querySelector(".btn-dark").dataset.id = producto.id;
+      templateCard.querySelector(
+        ".btn-dark",
+        ".fas fa-cart-arrow-down"
+      ).dataset.id = producto.id;
       const clone = templateCard.cloneNode(true);
       fragment.appendChild(clone);
     }
@@ -47,7 +50,7 @@ const pintarCards = (data) => {
 };
 
 const addCarrito = (e) => {
-  if (e.target.classList.contains("btn-dark")) {
+  if (e.target.classList.contains("btn-dark", "fas fa-cart-arrow-down")) {
     setCarrito(e.target.parentElement);
   }
   e.stopPropagation();
@@ -55,7 +58,8 @@ const addCarrito = (e) => {
 
 const setCarrito = (objecto) => {
   const producto = {
-    id: objecto.querySelector(".btn-dark").dataset.id,
+    id: objecto.querySelector(".btn-dark", ".fas fa-cart-arrow-down").dataset
+      .id,
     title: objecto.querySelector("h5").textContent,
     precio: objecto.querySelector("p").textContent,
     cantidad: 1,
